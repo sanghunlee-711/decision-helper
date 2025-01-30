@@ -1,0 +1,75 @@
+{
+    "categories": [
+        {
+            "id": "카테고리-0",
+            "name": "위스키",
+            "subCategories": [
+                {"name": "맥캘란 12년", "id": "위스키-0"},
+                {"name": "글렌피딕 18년", "id": "위스키-1"}
+            ],
+            "questions": [
+                {
+                "question": "나는 어떤 종류의 위스키를 좋아하나요?",
+                "answers": [
+                        { "option": "맥이 들어가는 위스키", "weights": [
+                            {"name": "맥캘란 12년", "id": "위스키-0", "weight": 5},
+                            {"name": "스파클링 위스키", "id": "위스키-1", "weight": 3},
+                            {"name": "레드 위스키", "id": "와인-2", "weight": 1}
+                            ] 
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "카테고리-1",
+            "name": "와인",
+            "subCategories": [
+                {"name": "화이트 와인", "id": "와인-0"},
+                {"name": "스파클링 와인", "id": "와인-1"},
+                {"name": "레드 와인", "id": "와인-2"}
+            ],
+            "questions": [
+                {
+                "question": "내가 좋아하는 계절은?",
+                "answers": [
+                        { "option": "봄", "weights": [
+                            {"name": "화이트 와인", "id": "와인-0", "weight": 5},
+                            {"name": "스파클링 와인", "id": "와인-1", "weight": 3},
+                            {"name": "레드 와인", "id": "와인-2", "weight": 1}
+                        ] },
+                        { "option": "여름", "weights": [
+                            {"name": "화이트 와인", "id": "와인-0", "weight": 0},
+                            {"name": "스파클링 와인", "id": "와인-1", "weight": 5},
+                            {"name": "레드 와인", "id": "와인-2", "weight": 5}
+                        ] },
+                        { "option": "가을", "weights": [
+                            {"name": "화이트 와인", "id": "와인-0", "weight": 3},
+                            {"name": "스파클링 와인", "id": "와인-1", "weight": 1},
+                            {"name": "레드 와인", "id": "와인-2", "weight": 2}
+                        ] },
+                        { "option": "겨울", "weights": [
+                            {"name": "화이트 와인", "id": "와인-0", "weight": 1},
+                            {"name": "스파클링 와인", "id": "와인-1", "weight": 1},
+                            {"name": "레드 와인", "id": "와인-2", "weight": 5}
+                        ] }
+                    ]
+                },
+                {
+                "question": "내가 좋아하는 색상은?",
+                "answers": [
+                        { "option": "blue", "weights": [
+                            {"name": "화이트 와인", "id": "와인-0", "weight": 3},
+                            {"name": "스파클링 와인", "id": "와인-1", "weight": 1}
+                        ] },
+                        { "option": "red", "weights": [
+                            {"name": "화이트 와인", "id": "와인-0", "weight": 0},
+                            {"name": "스파클링 와인", "id": "와인-1", "weight": 2},
+                            {"name": "레드 와인", "id": "와인-2", "weight": 5}
+                        ] }
+                    ]
+                }
+            ]
+        }
+    ]
+}
