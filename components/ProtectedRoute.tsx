@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged, User } from "firebase/auth";
+import { UserContext } from "@/context/UserContext"; // ✅ Context 불러오기
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -12,7 +13,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) {
-        router.push("/login"); // ✅ 로그인하지 않은 유저는 로그인 페이지로 이동
+        router.push("/login");
       } else {
         setUser(currentUser);
       }
@@ -20,7 +21,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     return () => unsubscribe();
   }, [router]);
 
-  if (!user) return null; // ✅ 로그인 상태 확인 전에는 아무것도 렌더링하지 않음
+  if (!user) return null;
 
-  return <>{children}</>;
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }
