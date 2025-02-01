@@ -4,8 +4,7 @@ import { useState } from "react";
 import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { SortableItem } from "@/components/SortableItem";
-import { Category } from "@/types";
-import {Input} from '@/components/ui/input'
+import { Category } from "@/types/menu";
 
 export const List = () => {
     const [categories, setCategories] = useState<Category[]>([

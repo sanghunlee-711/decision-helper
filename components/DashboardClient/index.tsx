@@ -6,11 +6,13 @@ import { Button } from "../ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { LinkButton } from "../ui/LinkButton"
 import { useUser } from "@/context/UserContext"
+import { Loader2 } from "lucide-react"
+import { useTransition } from "react"
 
 
 export const DashBoardClient = () => {
     const currentUser = useUser();
-
+    const[isPending, startTransition] = useTransition()
 
     return (
         <div className="flex justify-center items-center min-h-screen">
@@ -30,8 +32,15 @@ export const DashBoardClient = () => {
         </LinkButton>
         </div>
           <CardContent className="flex flex-col gap-4">
-            <p className="text-center text-gray-600">환영합니다, {currentUser?.displayName}!</p>
-            <Button variant="outline" onClick={logOut}>로그아웃</Button>
+            {
+                isPending ?
+                    <Loader2 className="animate-spin mr-2"/> : (
+                    <>
+                        <p className="text-center text-gray-600">환영합니다, {currentUser?.displayName}!</p>
+                        <Button variant="outline" onClick={()=>startTransition(logOut)}>로그아웃</Button>
+                    </>
+                )
+            }
           </CardContent>
         </Card>
       </div>
