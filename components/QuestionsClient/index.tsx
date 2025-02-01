@@ -10,8 +10,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MenuData } from "@/types/menu";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { getEmailUsername } from "@/utils/email";
 
-export default function QuestionsClient({ initialMenus, userId }: { initialMenus: MenuData; userId: string }) {
+export default function QuestionsClient({ initialMenus, email }: { initialMenus: MenuData; email: string }) {
   const [menus, setMenus] = useState<MenuData>(initialMenus || { categories: [] });
   const [questionText, setQuestionText] = useState<{ [key: string]: string }>({});
   const [answerText, setAnswerText] = useState<{ [key: string]: string }>({});
@@ -71,12 +72,12 @@ export default function QuestionsClient({ initialMenus, userId }: { initialMenus
 
     /** ✅ Firestore에 메뉴 데이터 저장 */
     const saveToFirebase = async () => {
-      if (!userId) {
+      if (!email) {
         alert("로그인이 필요합니다.");
         return;
       }
         try {
-          await setDoc(doc(collection(db, "menus"), userId), menus);
+          await setDoc(doc(collection(db, "menus"), getEmailUsername(email)), menus);
         alert("질문이 Firestore에 저장되었습니다! ✅");
         } catch (error) {
         console.error("🔥 Firestore 저장 오류:", error);

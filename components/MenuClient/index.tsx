@@ -8,13 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Category, MenuData } from "@/types/menu";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { getEmailUsername } from "@/utils/email";
 
 
-export default function MenuClient({ initialMenus, userId }: { initialMenus: MenuData; userId: string }) {
+export default function MenuClient({ initialMenus, email }: { initialMenus: MenuData; email: string }) {
   const [menus, setMenus] = useState<MenuData>(initialMenus || { categories: [] });
   const [categoryText, setCategoryText] = useState("");
   const [subcategoryText, setSubcategoryText] = useState<{ [key: string]: string }>({});
-
+  
   const generateId = () => crypto.randomUUID(); // ✅ UUID 생성
 
   /** ✅ 새로운 카테고리 추가 */
@@ -48,12 +49,12 @@ export default function MenuClient({ initialMenus, userId }: { initialMenus: Men
 
   /** ✅ Firebase에 유저별 데이터 저장 */
   const saveToFirebase = async () => {
-    if (!userId) {
+    if (!email) {
       alert("로그인이 필요합니다.");
       return;
     }
     try {
-      await setDoc(doc(collection(db, "menus"), userId), menus);
+      await setDoc(doc(collection(db, "menus"), getEmailUsername(email)), menus);
       alert("메뉴가 저장되었습니다!");
     } catch (error) {
       console.error("Error saving to Firestore:", error);

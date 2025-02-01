@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,8 +29,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Suspense fallback={<GlobalLoading />}>{children}</Suspense>
       </body>
     </html>
+  );
+}
+
+
+// 글로벌 로딩 UI
+function GlobalLoading() {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80">
+      <Loader2 className="animate-spin h-8 w-8 text-blue-600" />
+    </div>
   );
 }

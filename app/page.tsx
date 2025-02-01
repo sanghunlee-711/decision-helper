@@ -1,22 +1,18 @@
-import { Button } from "@/components/ui/button"
-import  Link  from "next/link";
+import { cookies } from "next/headers";
+import { HomeClient } from "@/components/HomeClient";
 
+async function checkCookie() {
+  // 서버에서 쿠키 가져오기
+  const cookieStore =  await cookies();
+  const authToken = cookieStore.get("authToken");
 
-
-export default function Home() {
-
-  return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">오하이오</h1>
-      <Button>
-        <Link href ="/menu">메뉴등록 페이지 가기</Link>
-      </Button>
-      <Button>
-        <Link href ="/questions">질문등록 페이지 가기</Link>  
-      </Button>
-      
-    </div>
-  );
+  return authToken;
 }
 
+export default async function Home() {
+  const authToken =   await checkCookie();
 
+  return (
+    <HomeClient authToken={authToken} />
+  );
+}
