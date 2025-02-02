@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,9 +28,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased p-[12px]`}
       >
-        <Suspense fallback={<GlobalLoading />}>{children}</Suspense>
+        <Suspense fallback={<GlobalLoading />}>
+          <nav>
+            <Link  href={"/"} >
+              <h1 className="font-[700]">홈으로 가기</h1>
+            </Link>
+          </nav>
+          {children}
+        </Suspense>
       </body>
     </html>
   );

@@ -71,7 +71,19 @@ export default function QuestionsClient({ initialMenus, email }: { initialMenus:
     };
 
     const removeAnswer = (categoryId: string, questionId: string, answerId: string) => {
-
+      // ans.weights.filter((w)=> w.id !== weightId),
+      setMenus((prev) => ({
+        categories: prev.categories.map((cat) =>
+          cat.id === categoryId
+            ? {
+                ...cat,
+                questions: cat.questions.map((q) =>
+                  q.id === questionId ? { ...q, answers: q.answers.filter((a)=> a.id !== answerId) } : q
+                ),
+              }
+            : cat
+        ),
+      }));
     }
 
     /** ✅ Firestore에 메뉴 데이터 저장 */
@@ -231,7 +243,7 @@ export default function QuestionsClient({ initialMenus, email }: { initialMenus:
 
                       {question.answers.map((answer) => (
                         <div key={answer.id} className="ml-4 mt-4 border-l pl-4">
-                          <div>
+                          <div className="flex justify-between items-center">
                             <strong>답변: {answer.option}</strong>
                             <Button onClick={()=> removeAnswer(category.id, question.id, answer.id)}>답변 삭제</Button>
                           </div>
@@ -262,7 +274,7 @@ export default function QuestionsClient({ initialMenus, email }: { initialMenus:
                                 value={[w.weight]}
                                 onValueChange={(value) => updateWeight(category.id, question.id, answer.id, w.id, value[0])}
                                 />
-                                <Button onClick={() => removeWeight(category.id, question.id, answer.id, w.id)}>삭제</Button>
+                                <Button onClick={() => removeWeight(category.id, question.id, answer.id, w.id)}>x</Button>
                             </div>
                           ))}
                         </div>
