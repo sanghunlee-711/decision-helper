@@ -168,7 +168,7 @@ export default function CategoryManager() {
                 </CardHeader>
                 <CardContent>
                   {category.subcategories.map((subcategory) => (
-                    <Accordion key={subcategory.id}>
+                    <Accordion key={subcategory.id} type="multiple">
                       <AccordionItem value={subcategory.id}>
                         <AccordionTrigger>{subcategory.name}</AccordionTrigger>
                         <AccordionContent>

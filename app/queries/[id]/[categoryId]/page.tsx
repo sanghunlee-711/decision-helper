@@ -2,13 +2,10 @@ import { QueryClient } from "@/components/QueryClient";
 import { adminDb } from "@/lib/firebaseAdmin";
 import { MenuData } from "@/types/menu";
 import { notFound } from "next/navigation";
-import { use } from "react"; // ✅ Next.js의 서버에서 `use` 임포트
+
 
 interface QuestionsPageProps {
-  params: {
-    id: string;
-    categoryId: string;
-  };
+  params: Promise<{ id: string; categoryId: string }>; 
 }
 
 async function fetchQueryData(id: string) {
@@ -19,11 +16,16 @@ async function fetchQueryData(id: string) {
   return snapshot.exists ? (snapshot.data() as MenuData) : { categories: [] };
 }
 
-export default function QuestionsPage({ params }: QuestionsPageProps) {
-  const { id, categoryId } = params;
+export default async function QuestionsPage({ params }: QuestionsPageProps) {
+  // ✅ 여기서 params는 { id: string, categoryId: string } 타입
+  const { id, categoryId } = await params;
 
-  // ✅ Next.js 15에서 서버 컴포넌트의 use() 활용
-  const queryData = use(fetchQueryData(id)); 
+  if (!id || !categoryId) {
+    notFound();
+  }
+
+  // ✅ 데이터를 가져올 때 await 사용
+  const queryData = await fetchQueryData(id);
   const questions = queryData?.categories.find((category) => category.id === categoryId)?.questions;
 
   if (!queryData || queryData.categories.length === 0) {

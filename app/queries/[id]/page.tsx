@@ -5,6 +5,10 @@ import { notFound } from "next/navigation";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+interface QueryPageProps {
+  params: Promise<{ id: string }>
+}
+
 async function fetchQueryData(id: string): Promise<MenuData | null> {
   const docRef = adminDb.collection("menus").doc(id);
   const snapshot = await docRef.get();
@@ -12,8 +16,8 @@ async function fetchQueryData(id: string): Promise<MenuData | null> {
   return snapshot.exists ? (snapshot.data() as MenuData) : { categories: [] };
 }
 
-export default async function QueryPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function QueryPage({ params }: QueryPageProps ) {
+  const { id } = await params;
   const queryData = await fetchQueryData(id);
 
   if (!queryData) {
@@ -30,7 +34,7 @@ export default async function QueryPage({ params }: { params: { id: string } }) 
               {category.name}
             </CardHeader>
             <CardContent className="flex justify-center">
-              <Link href={`/queries/${params.id}/${category.id}`} passHref>
+              <Link href={`/queries/${id}/${category.id}`} passHref>
                 <Button className="w-full" variant="outline">
                   선택하기
                 </Button>
