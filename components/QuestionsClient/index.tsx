@@ -70,6 +70,10 @@ export default function QuestionsClient({ initialMenus, email }: { initialMenus:
       setAnswerText((prev) => ({ ...prev, [questionId]: "" }));
     };
 
+    const removeAnswer = (categoryId: string, questionId: string, answerId: string) => {
+
+    }
+
     /** ✅ Firestore에 메뉴 데이터 저장 */
     const saveToFirebase = async () => {
       if (!email) {
@@ -126,6 +130,35 @@ export default function QuestionsClient({ initialMenus, email }: { initialMenus:
 
     setSelectedSubcategory((prev) => ({ ...prev, [answerId]: "" }));
   };
+
+  const removeWeight = (categoryId: string, questionId: string, answerId: string, weightId: string) => {
+    setMenus((prev) => ({
+      categories: prev.categories.map((cat) =>
+        cat.id === categoryId
+          ? {
+              ...cat,
+              questions: cat.questions.map((q) =>
+                q.id === questionId
+                  ? {
+                      ...q,
+                      answers: q.answers.map((ans) =>
+                        ans.id === answerId
+                          ? {
+                              ...ans,
+                              weights: ans.weights.filter((w)=> w.id !== weightId),
+                            }
+                          : ans
+                      ),
+                    }
+                  : q
+              ),
+            }
+          : cat
+      ),
+    }));
+  }
+
+  
 
   /** ✅ 특정 weight의 값 변경 */
   const updateWeight = (categoryId: string, questionId: string, answerId: string, subcategoryId: string, value: number) => {
@@ -198,8 +231,10 @@ export default function QuestionsClient({ initialMenus, email }: { initialMenus:
 
                       {question.answers.map((answer) => (
                         <div key={answer.id} className="ml-4 mt-4 border-l pl-4">
-                          <strong>답변: {answer.option}</strong>
-
+                          <div>
+                            <strong>답변: {answer.option}</strong>
+                            <Button onClick={()=> removeAnswer(category.id, question.id, answer.id)}>답변 삭제</Button>
+                          </div>
                           {/* ✅ 가중치 추가 UI */}
                           <div className="flex gap-2 mt-2">
                             <Select onValueChange={(value) => setSelectedSubcategory((prev) => ({ ...prev, [answer.id]: value }))}>
@@ -227,6 +262,7 @@ export default function QuestionsClient({ initialMenus, email }: { initialMenus:
                                 value={[w.weight]}
                                 onValueChange={(value) => updateWeight(category.id, question.id, answer.id, w.id, value[0])}
                                 />
+                                <Button onClick={() => removeWeight(category.id, question.id, answer.id, w.id)}>삭제</Button>
                             </div>
                           ))}
                         </div>
